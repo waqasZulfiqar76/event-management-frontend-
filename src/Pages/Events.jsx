@@ -68,11 +68,19 @@ const navigate =useNavigate()
     navigate(`/event-form/${id}`)
 
   };
+//handle detail event 
+  const handleDetail = (id) => {
+  
+    console.log("detail event with ID:", id);
+    navigate(`/event-detail/${id}`)
+
+  };
+
 
   return (
     <>
-      <h1>Events</h1>
-    <Box sx={{margin: '3rem 0', display:'flex', justifyContent:'space-around' }}>
+      <h1 style={{margin:"2rem 0rem"}}>Events</h1>
+    <Box sx={{margin: '1rem 0', display:'flex', justifyContent:'space-around' }}>
       <TextField
         variant="standard" 
         type="text"
@@ -95,6 +103,7 @@ const navigate =useNavigate()
         handleRowsPerPageChange={handleChangeRowsPerPage}
         handleDeleteEvent={handleDeleteEvent}
         handleUpdateEvent={handleUpdateEvent}
+        handleDetail={handleDetail}
       />
       </>
   );

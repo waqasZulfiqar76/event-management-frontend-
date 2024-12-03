@@ -176,7 +176,9 @@ function SignIn() {
 
       if (response.data.token) {
         // Store the user's authentication status and token in local storage
+       
         localStorage.setItem('authToken', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         toast.success('Sign In successful');
         navigate('/dashboard');
       } else {

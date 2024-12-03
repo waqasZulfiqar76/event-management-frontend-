@@ -10,6 +10,7 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';const EventTable = ({
   events,
@@ -20,6 +21,7 @@ import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';cons
   handleRowsPerPageChange,
   handleDeleteEvent,
   handleUpdateEvent,
+  handleDetail
 }) => {
   return (
     <TableContainer component={Paper}>
@@ -42,7 +44,7 @@ import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';cons
               <TableCell>{event?.description}</TableCell>
               <TableCell>{new Date(event?.date).toLocaleString()}</TableCell>
               <TableCell>{event?.location}</TableCell>
-              <TableCell sx={{ display: "flex" }}>
+              {/* <TableCell sx={{ display: "flex" }}>
                 <SecurityUpdateGoodIcon
                   onClick={() => handleUpdateEvent(event._id)}
                   color="primary"
@@ -53,6 +55,12 @@ import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';cons
                  sx={{ color:"#f44336"}}
                   onClick={() => handleDeleteEvent(event._id)}
                 />
+              </TableCell> */}
+              <TableCell>
+              <VisibilityIcon 
+              onClick={() => handleDetail(event._id)}
+              />
+
               </TableCell>
             </TableRow>
           ))}

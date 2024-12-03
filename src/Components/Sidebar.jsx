@@ -31,6 +31,7 @@ import ProtectedRoute from '../Utils/ProtectedRoute';
 import SignUp from '../Pages/SignUp';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import EventForm from './Events/EventForm';
+import EventDetailPage from '../Pages/EventDetailPage';
 
 const drawerWidth = 240;
 
@@ -263,6 +264,14 @@ const isPublicRoute = location.pathname === '/' || location.pathname === '/sign-
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/event-detail/:id"
+            element={
+              <ProtectedRoute>
+                <EventDetailPage />
               </ProtectedRoute>
             }
           />
