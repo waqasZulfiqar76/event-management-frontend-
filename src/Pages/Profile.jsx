@@ -89,6 +89,11 @@ const Profile = () => {
     console.log("Updating event with ID:", id);
     navigate(`/event-form/${id}`);
   };
+  //handle detail event
+  const handleDetail = (id) => {
+    console.log("detail event with ID:", id);
+    navigate(`/event-detail/${id}`);
+  };
 
   return (
     <Box sx={{ padding: 3, display: "flex", flexDirection: "column", gap: 3 }}>
@@ -198,7 +203,11 @@ const Profile = () => {
             {loading ? (
               <CircularProgress />
             ) : joineventData?.length > 0 ? (
-              <EventTable events={joineventData} isUserEvents={false} />
+              <EventTable
+                events={joineventData}
+                handleDetail={handleDetail}
+                isUserEvents={false}
+              />
             ) : (
               <Typography variant="body2" color="textSecondary">
                 No events found for this user.
