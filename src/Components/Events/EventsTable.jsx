@@ -8,11 +8,13 @@ import {
   TablePagination,
   TableContainer,
   Paper,
-  Button,
+  Box,
 } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';const EventTable = ({
+import SecurityUpdateGoodIcon from "@mui/icons-material/SecurityUpdateGood";
+
+const EventTable = ({
   events,
   totalCount,
   rowsPerPage,
@@ -21,8 +23,10 @@ import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';cons
   handleRowsPerPageChange,
   handleDeleteEvent,
   handleUpdateEvent,
-  handleDetail
+  handleDetail,
+  isUserEvents,
 }) => {
+  console.log(events, "join event ");
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -44,38 +48,41 @@ import SecurityUpdateGoodIcon from '@mui/icons-material/SecurityUpdateGood';cons
               <TableCell>{event?.description}</TableCell>
               <TableCell>{new Date(event?.date).toLocaleString()}</TableCell>
               <TableCell>{event?.location}</TableCell>
-              {/* <TableCell sx={{ display: "flex" }}>
-                <SecurityUpdateGoodIcon
-                  onClick={() => handleUpdateEvent(event._id)}
-                  color="primary"
-                  style={{ marginRight: "10px" }}
-                />
 
-                <DeleteIcon
-                 sx={{ color:"#f44336"}}
-                  onClick={() => handleDeleteEvent(event._id)}
-                />
-              </TableCell> */}
+              {/* Conditional rendering of actions */}
               <TableCell>
-              <VisibilityIcon 
-              onClick={() => handleDetail(event._id)}
-              />
-
+                {isUserEvents ? (
+                  <Box sx={{ display: "flex", gap: "0.3rem" }}>
+                    <SecurityUpdateGoodIcon
+                      onClick={() => handleUpdateEvent(event._id)}
+                      color="primary"
+                    />
+                    <DeleteIcon
+                      sx={{ color: "#f44336" }}
+                      onClick={() => handleDeleteEvent(event._id)}
+                    />
+                  </Box>
+                ) : (
+                  <VisibilityIcon onClick={() => handleDetail(event._id)} />
+                )}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      <TablePagination
-        rowsPerPageOptions={[10, 20, 30]}
-        component="div"
-        count={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-      />
+      {/* Conditionally hide pagination if events are user-specific */}
+      {!isUserEvents && (
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component="div"
+          count={totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+        />
+      )}
     </TableContainer>
   );
 };

@@ -72,7 +72,10 @@ button:focus-visible {
   margin: 0%;
   box-sizing: border-box;
 }
+:root{
+  font-family: 'Parkinsans', sans-serif;
 
+}
 body {
   font-family: 'Parkinsans', sans-serif;
 }

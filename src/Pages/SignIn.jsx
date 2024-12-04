@@ -222,7 +222,7 @@ function SignIn() {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" fontFamily="Parkinsans">
           Sign In
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -253,7 +253,7 @@ function SignIn() {
             error={!!errors.password}
             helperText={errors.password}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit"  fullWidth variant="contained" sx={{ mt: 3, mb: 2 ,fontFamily:"Parkinsans", backgroundColor:"black", color:"white" }}>
             Sign In
           </Button>
           <Grid item>
