@@ -45,12 +45,12 @@ const EventTable = ({
         >
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Organizer</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Organizer</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Location</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
