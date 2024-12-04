@@ -1,12 +1,11 @@
-import DashboardStats from "../Components/DashboardStats"
+import DashboardStats from "../Components/DashboardStats";
 
 const Dashboard = () => {
   return (
     <div>
-<DashboardStats/>
-
+      <DashboardStats />
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

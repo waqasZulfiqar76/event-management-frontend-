@@ -1,21 +1,13 @@
+import { BrowserRouter as Router } from "react-router-dom";
 
+import "./App.css";
 
-import { BrowserRouter as Router,   } from 'react-router-dom';
-
-import './App.css';
-
-import PersistentDrawerLeft from './Components/Sidebar';
-
-
+import PersistentDrawerLeft from "./Components/Sidebar";
 
 function App() {
- 
-
   return (
     <Router>
-      
-      <PersistentDrawerLeft  />
-    
+      <PersistentDrawerLeft />
     </Router>
   );
 }
