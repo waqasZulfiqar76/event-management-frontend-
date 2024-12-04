@@ -34,7 +34,7 @@ function SignUp() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-// submit form
+  // submit form
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -74,7 +74,7 @@ function SignUp() {
         // Store the user's authentication status and token in local storage
         localStorage.setItem("authToken", response.data.token);
         toast.success("Sign Up successful");
-        navigate("/dashboard");
+        navigate("/");
       } else {
         toast.error("Sign Up failed");
       }
@@ -154,8 +154,13 @@ function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 ,fontFamily:"Parkinsans", backgroundColor:"black", color:"white"}}
-
+            sx={{
+              mt: 3,
+              mb: 2,
+              fontFamily: "Parkinsans",
+              backgroundColor: "black",
+              color: "white",
+            }}
           >
             Sign Up
           </Button>
