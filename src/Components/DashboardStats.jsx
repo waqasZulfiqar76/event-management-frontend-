@@ -100,7 +100,10 @@ const DashboardStats = ({ userStats }) => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
+              >
                 Total Events Created
               </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -127,7 +130,10 @@ const DashboardStats = ({ userStats }) => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
+              >
                 Total Events Joined
               </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -154,7 +160,10 @@ const DashboardStats = ({ userStats }) => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
+              >
                 Upcoming Created Events
               </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -181,7 +190,10 @@ const DashboardStats = ({ userStats }) => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
+              >
                 Upcoming Joined Events
               </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
