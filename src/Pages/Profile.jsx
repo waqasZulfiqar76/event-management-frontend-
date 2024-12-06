@@ -96,7 +96,19 @@ const Profile = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, display: "flex", flexDirection: "column", gap: 3 }}>
+    <Box
+      sx={{
+        marginTop: "3rem",
+        minWidth: "100%",
+        borderRadius: "15px",
+
+        padding: 3,
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        backgroundColor: "#eef2f6",
+      }}
+    >
       {/* User Profile Section */}
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <Card>
@@ -107,15 +119,15 @@ const Profile = () => {
               align="center"
               sx={{
                 fontWeight: "bold",
-                marginBottom: 3,
-                marginTop: 5,
+                // marginBottom: 3,
+                // marginTop: 5,
                 fontFamily: "Parkinsans", // Font you want to apply
 
-                color: "Black",
+                // color: "Black",
 
-                opacity: "70%",
-                padding: "10px",
-                clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
+                // opacity: "70%",
+                // padding: "10px",
+                // clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
               }}
             >
               User Profile
@@ -150,12 +162,12 @@ const Profile = () => {
                 marginBottom: 3,
                 marginTop: 5,
                 fontFamily: "Parkinsans",
-                backgroundColor: "#1976d2",
-                color: "white",
-                backgroundColor: "black",
-                opacity: "70%",
-                padding: "10px",
-                clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
+                // backgroundColor: "#1976d2",
+                // color: "white",
+                // backgroundColor: "black",
+                // opacity: "70%",
+                // padding: "10px",
+                // clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
               }}
             >
               My Events
@@ -190,12 +202,12 @@ const Profile = () => {
                 marginBottom: 3,
                 marginTop: 5,
                 fontFamily: "Parkinsans",
-                backgroundColor: "#1976d2",
-                color: "white",
-                backgroundColor: "black",
-                opacity: "70%",
-                padding: "10px",
-                clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
+                // backgroundColor: "#1976d2",
+                // color: "white",
+                // backgroundColor: "black",
+                // opacity: "70%",
+                // padding: "10px",
+                // clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
               }}
             >
               Joined Events

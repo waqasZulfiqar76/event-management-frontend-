@@ -116,8 +116,19 @@ const EventForm = () => {
       });
   };
 
+  const currentDate = new Date().toISOString().slice(0, 16);
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      sx={{
+        marginTop: "4rem",
+        minWidth: "100%",
+
+        backgroundColor: "#eef2f6",
+        borderRadius: "15px",
+        padding: 3,
+      }}
+    >
       <Toaster />
       <Typography
         variant="h4"
@@ -127,13 +138,13 @@ const EventForm = () => {
           fontWeight: "bold",
           marginBottom: 3,
           marginTop: 5,
-          fontFamily: "Parkinsans", // Font you want to apply
-          backgroundColor: "#1976d2",
-          color: "white",
-          backgroundColor: "black",
+          fontFamily: "Parkinsans",
+          // backgroundColor: "#673ab7",
+
+          color: "black",
+
           opacity: "70%",
           padding: "10px",
-          clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
         }}
       >
         {id ? "Update Event" : "Create Event"}
@@ -179,6 +190,7 @@ const EventForm = () => {
           onChange={handleChange}
           fullWidth
           required
+          inputProps={{ min: currentDate }}
         />
 
         {/* Category */}
@@ -225,7 +237,12 @@ const EventForm = () => {
 
         {/* Submit Button */}
 
-        <Button type="submit" variant="contained" color="dark" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ backgroundColor: "#673ab7" }}
+          fullWidth
+        >
           {id ? "Update Event" : "Create Event"}
         </Button>
       </form>

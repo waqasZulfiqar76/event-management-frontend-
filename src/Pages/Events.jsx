@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
   const [searchTitle, setSearchTitle] = useState("");
   const navigate = useNavigate();
@@ -71,65 +71,73 @@ const Events = () => {
 
   return (
     <>
-      <Typography
-        variant="h4"
-        gutterBottom
-        align="center"
-        sx={{
-          fontWeight: "bold",
-          marginBottom: 3,
-          marginTop: 5,
-          fontFamily: "Parkinsans", // Font you want to apply
-          backgroundColor: "#1976d2",
-          color: "white",
-          backgroundColor: "black",
-          opacity: "70%",
-          padding: "10px",
-          clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
-        }}
-      >
-        Events
-      </Typography>
       <Box
         sx={{
-          margin: "1rem 0",
-          display: "flex",
-          justifyContent: "space-around",
+          marginTop: "4.5rem",
+
+          // height: "100vh",
+          backgroundColor: "#eef2f6",
+          borderRadius: "15px",
+          padding: 3,
         }}
       >
-        <TextField
-          variant="standard"
-          type="text"
-          value={searchTitle}
-          onChange={handleSearchChange}
-          placeholder="Search Event"
-          style={{ marginBottom: "20px", padding: "8px", width: "300px" }}
-        />
-        <Button
-          onClick={() => navigate("/event-form")}
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
           sx={{
-            padding: "5px",
-            width: "6rem",
-            height: "2.5rem",
+            fontWeight: "bold",
+            marginBottom: 3,
+            textAlign: "start",
+            fontFamily: "Parkinsans",
             color: "black",
-            outline: "black",
+            opacity: "70%",
+            padding: "10px",
           }}
-          variant="outlined"
         >
-          Add Event
-        </Button>
+          Events
+        </Typography>
+        <Box
+          sx={{
+            margin: "",
+            display: "flex",
+            justifyContent: "space-around",
+          }}
+        >
+          <TextField
+            variant="standard"
+            type="text"
+            value={searchTitle}
+            onChange={handleSearchChange}
+            placeholder="Search Event"
+            style={{ marginBottom: "20px", padding: "8px", width: "300px" }}
+          />
+          <Button
+            onClick={() => navigate("/event-form")}
+            sx={{
+              padding: "5px",
+              width: "6.5rem",
+              height: "2.5rem",
+              color: "#5e35b1",
+              outline: "#5e35b1",
+            }}
+            variant="outlined"
+          >
+            Add Event
+          </Button>
+        </Box>
+        <EventTable
+          events={events}
+          totalCount={totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handlePageChange={handleChangePage}
+          handleRowsPerPageChange={handleChangeRowsPerPage}
+          handleDeleteEvent={handleDeleteEvent}
+          handleUpdateEvent={handleUpdateEvent}
+          handleDetail={handleDetail}
+        />
       </Box>
-      <EventTable
-        events={events}
-        totalCount={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handlePageChange={handleChangePage}
-        handleRowsPerPageChange={handleChangeRowsPerPage}
-        handleDeleteEvent={handleDeleteEvent}
-        handleUpdateEvent={handleUpdateEvent}
-        handleDetail={handleDetail}
-      />
     </>
   );
 };

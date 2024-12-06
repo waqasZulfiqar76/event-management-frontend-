@@ -13,8 +13,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
+
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import {
   Link,
   Routes,
@@ -22,19 +23,11 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import Divider from "@mui/material/Divider";
-import { Drawer, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, Drawer, Menu, MenuItem, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
-import Dashboard from "../Pages/Dashboard";
-import Events from "../Pages/Events";
-import Profile from "../Pages/Profile";
-import SignIn from "../Pages/SignIn";
-import ProtectedRoute from "../Utils/ProtectedRoute";
-import SignUp from "../Pages/SignUp";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import EventForm from "./Events/EventForm";
-import EventDetailPage from "../Pages/EventDetailPage";
-
+import logo from "../assets/logo.png";
+import routes from "../Routes/Routes";
+import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -111,8 +104,8 @@ export default function PersistentDrawerLeft() {
   };
 
   const menuItems = [
-    { text: "Dashboard", icon: <HomeIcon />, path: "/dashboard" },
-    { text: "Event", icon: <EventNoteIcon />, path: "/event" },
+    { text: "Dashboard", icon: <HomeOutlinedIcon />, path: "/dashboard" },
+    { text: "Event", icon: <DateRangeOutlinedIcon />, path: "/event" },
   ];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -135,15 +128,14 @@ export default function PersistentDrawerLeft() {
     location.pathname === "/" || location.pathname === "/sign-up";
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       {/* Conditionally render AppBar and Drawer for public routes */}
       {!isPublicRoute && (
         <>
           <AppBar
             position="fixed"
             open={open}
-            sx={{ backgroundColor: "black", color: "white", opacity: "70%" }}
+            sx={{ backgroundColor: "white", color: "black", boxShadow: "none" }}
           >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -152,7 +144,11 @@ export default function PersistentDrawerLeft() {
                   aria-label="open drawer"
                   onClick={handleDrawerOpen}
                   edge="start"
-                  sx={[{ mr: 2 }, open && { display: "none" }]}
+                  sx={[
+                    { color: "#673ab7", mr: 2 },
+
+                    open && { display: "none" },
+                  ]}
                 >
                   <MenuIcon />
                 </IconButton>
@@ -168,7 +164,7 @@ export default function PersistentDrawerLeft() {
                     alignItems: "center",
                     gap: "8px",
                     cursor: "pointer",
-                    color: "white",
+                    color: "black",
                   }}
                 >
                   Event Management System
@@ -180,14 +176,18 @@ export default function PersistentDrawerLeft() {
                 <Typography>{user?.name}</Typography>
 
                 <IconButton
-                  size="large"
+                  size="xl"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   onClick={handleMenu}
-                  color="inherit"
+                  color="#673ab7"
                 >
-                  <AccountCircle />
+                  <AccountCircle
+                    sx={{
+                      color: "#673ab7",
+                    }}
+                  />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -204,8 +204,30 @@ export default function PersistentDrawerLeft() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                  <MenuItem
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#ede7f6",
+                        color: "#673ab7",
+                        transition: "background-color 0.3s ease",
+                      },
+                    }}
+                    onClick={handleClose}
+                  >
+                    Profile
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#ede7f6",
+                        color: "#673ab7",
+                        transition: "background-color 0.3s ease",
+                      },
+                    }}
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </MenuItem>
                 </Menu>
               </Box>
             </Toolbar>
@@ -213,15 +235,15 @@ export default function PersistentDrawerLeft() {
 
           <Drawer
             sx={{
-              color: "white",
+              color: "black",
               width: drawerWidth,
               flexShrink: 0,
               "& .MuiDrawer-paper": {
                 width: drawerWidth,
-                boxSizing: "border-box",
-                backgroundColor: "black",
-                color: "white",
-                opacity: "70%",
+
+                backgroundColor: "white",
+                color: "black",
+                border: "0",
               },
             }}
             variant="persistent"
@@ -229,14 +251,32 @@ export default function PersistentDrawerLeft() {
             open={open}
           >
             <DrawerHeader
-              sx={{ backgroundColor: "black", color: "white", opacity: "70%" }}
+              sx={{
+                backgroundColor: "white",
+                color: "black",
+                display: "flex", // Enable flexbox
+                justifyContent: "space-between", // Align content to the end (right)
+                alignItems: "center", // Center items vertically
+              }}
             >
+              <img
+                src={logo}
+                alt="logo"
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  marginLeft: "10px",
+                  objectFit: "contain", // Ensures the image fits well within its container
+                  mixBlendMode: "darken", // Blend mode applied
+                  display: "block", // Helps align in certain layouts
+                }}
+              />
               <IconButton
                 onClick={handleDrawerClose}
-                sx={{ color: "white", opacity: "100%" }}
+                sx={{ color: "#673ab7", opacity: "100%" }}
               >
                 {theme.direction === "ltr" ? (
-                  <ChevronLeftIcon />
+                  <ChevronLeftIcon sx={{ color: "#673ab7" }} />
                 ) : (
                   <ChevronRightIcon />
                 )}
@@ -247,11 +287,20 @@ export default function PersistentDrawerLeft() {
               {menuItems.map((item) => (
                 <ListItem key={item.text} disablePadding>
                   <ListItemButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#ede7f6",
+                        color: "#673ab7",
+                        transition: "background-color 0.3s ease",
+                        borderRadius: "15px",
+                      },
+                    }}
                     component={Link}
                     to={item.path}
-                    onClick={handleDrawerClose}
                   >
-                    <ListItemIcon sx={{ color: "white" }}>
+                    <ListItemIcon
+                      sx={{ justifyContent: "center", fontSize: "medium" }}
+                    >
                       {item.icon}
                     </ListItemIcon>
                     <ListItemText primary={item.text} />
@@ -265,56 +314,9 @@ export default function PersistentDrawerLeft() {
 
       <Main open={open}>
         <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/event"
-            element={
-              <ProtectedRoute>
-                <Events />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/event-detail/:id"
-            element={
-              <ProtectedRoute>
-                <EventDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/event-form/:id"
-            element={
-              <ProtectedRoute>
-                <EventForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/event-form"
-            element={
-              <ProtectedRoute>
-                <EventForm />
-              </ProtectedRoute>
-            }
-          />
+          {routes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
         </Routes>
       </Main>
     </Box>
