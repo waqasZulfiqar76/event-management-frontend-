@@ -9,6 +9,7 @@ import EventDetailPage from "../Pages/EventDetailPage";
 import ProtectedRoute from "../Utils/ProtectedRoute";
 import HomeIcon from "@mui/icons-material/Home";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import UnauthorizedPage from "../Components/Unautherized";
 
 const routes = [
   {
@@ -16,7 +17,7 @@ const routes = [
     name: "Dashboard",
     icon: <HomeIcon />,
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <Dashboard />
       </ProtectedRoute>
     ),
@@ -26,7 +27,7 @@ const routes = [
     name: "Event",
     icon: <EventNoteIcon />,
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <Events />
       </ProtectedRoute>
     ),
@@ -35,7 +36,7 @@ const routes = [
     path: "/profile",
     name: "Profile",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <Profile />
       </ProtectedRoute>
     ),
@@ -44,7 +45,7 @@ const routes = [
     path: "/event-detail/:id",
     name: "Event Detail",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <EventDetailPage />
       </ProtectedRoute>
     ),
@@ -53,7 +54,7 @@ const routes = [
     path: "/event-form/:id",
     name: "Edit Event",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <EventForm />
       </ProtectedRoute>
     ),
@@ -62,13 +63,18 @@ const routes = [
     path: "/event-form",
     name: "Add Event",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "user"]}>
         <EventForm />
       </ProtectedRoute>
     ),
   },
   { path: "/", name: "Sign In", element: <SignIn /> },
   { path: "/sign-up", name: "Sign Up", element: <SignUp /> },
+  {
+    path: "/unauthorized",
+    name: "unauthorized",
+    element: <UnauthorizedPage />,
+  },
 ];
 
 export default routes;

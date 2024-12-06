@@ -10,40 +10,8 @@ import API_URL from "../Utils/ApiURL";
 import axios from "axios";
 import { PieChart } from "@mui/x-charts/PieChart";
 
-const DashboardStats = ({ userStats }) => {
-  const [stats, setStats] = useState(userStats || null);
-  const [loading, setLoading] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  // Fetch user stats
-  useEffect(() => {
-    const fetchUserStats = async () => {
-      if (!userStats) {
-        setLoading(true);
-        try {
-          const response = await axios.get(
-            `${API_URL}/users/user-stats/${user._id}`
-          );
-
-          // Log response data
-          console.log(response.data);
-
-          if (response.status !== 200) {
-            throw new Error("Failed to fetch user stats");
-          }
-
-          setStats(response.data);
-        } catch (error) {
-          console.error("Error fetching stats:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserStats();
-  }, [userStats]);
-
+const DashboardStats = ({ stats, loading, heading }) => {
+  console.log(stats);
   const chartData = [
     { id: 0, value: stats?.totalCreatedEvents || 0, label: "Created Events" },
     { id: 1, value: stats?.totalJoinedEvents || 0, label: "Joined Events" },
@@ -100,7 +68,7 @@ const DashboardStats = ({ userStats }) => {
             padding: "10px",
           }}
         >
-          User Dashboard
+          {heading}
         </Typography>
 
         <Box
@@ -242,6 +210,53 @@ const DashboardStats = ({ userStats }) => {
               </Typography>
             </CardContent>
           </Card>
+          {/* total user Card */}
+          {stats?.totalUsers ? (
+            <Card
+              sx={{
+                backgroundImage: `linear-gradient(to right, #c471f2, #f76cc6)`,
+                color: "common.white",
+                boxShadow: 3,
+                flex: "1 1 calc(25% - 16px)",
+                maxWidth: "300px",
+                minWidth: "200px",
+                transition: "all 0.3s ease",
+                transform: "scale(1)",
+                "&:hover": {
+                  boxShadow: 6,
+                  transform: "scale(1.05)",
+                },
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                  {stats?.totalUsers || 0}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "semiBold",
+                    fontFamily: "Parkinsans",
+                    mt: "1rem",
+                    lineHeight: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  Total Users
+                </Typography>
+              </CardContent>
+            </Card>
+          ) : (
+            ""
+          )}
 
           {/* Upcoming Joined Events Card */}
           {/* <Card

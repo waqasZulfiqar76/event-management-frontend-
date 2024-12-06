@@ -17,9 +17,11 @@ import {
   Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SecurityUpdateGoodIcon from "@mui/icons-material/SecurityUpdateGood";
 import { Delete } from "@mui/icons-material";
+import EventFormModal from "./EventFormModel";
 
 const EventTable = ({
   events,
@@ -40,7 +42,7 @@ const EventTable = ({
     setSelectedEventId(id);
     setOpenDialog(true);
   };
-
+  console.log(events);
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedEventId(null);
@@ -54,6 +56,20 @@ const EventTable = ({
 
   // Check if pagination should be shown
   const shouldShowPagination = !isUserEvents && totalCount > rowsPerPage;
+
+  // Determine if there are any events with "pending" approvalStatus
+  const showApprovalStatusHeader = events.some(
+    (event) =>
+      event?.approvalStatus === "pending" ||
+      event?.approvalStatus === "approved"
+  );
+
+  let approvalStatusMessage = "";
+  if (events.some((event) => event?.approvalStatus === "pending")) {
+    approvalStatusMessage = "Pending";
+  } else if (events.some((event) => event?.approvalStatus === "approved")) {
+    approvalStatusMessage = "Approved";
+  }
 
   return (
     <Box
@@ -120,6 +136,17 @@ const EventTable = ({
               >
                 Location
               </TableCell>
+              {showApprovalStatusHeader && (
+                <TableCell
+                  sx={{
+                    backgroundColor: "#673ab7",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Approval Status
+                </TableCell>
+              )}
               <TableCell
                 sx={{
                   backgroundColor: "#673ab7",
@@ -139,15 +166,31 @@ const EventTable = ({
                 <TableCell>{event?.title}</TableCell>
                 <TableCell>{event?.organizer?.name}</TableCell>
                 <TableCell>{event?.description}</TableCell>
-                <TableCell>{new Date(event?.date).toLocaleString()}</TableCell>
+                <TableCell>
+                  {new Date(event?.date).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
+                </TableCell>
+
                 <TableCell>{event?.location}</TableCell>
+
+                <TableCell>
+                  {approvalStatusMessage && (
+                    <Typography>{approvalStatusMessage}</Typography>
+                  )}
+                </TableCell>
                 <TableCell>
                   {isUserEvents ? (
                     <Box sx={{ display: "flex", gap: "0.5rem" }}>
-                      <SecurityUpdateGoodIcon
-                        onClick={() => handleUpdateEvent(event._id)}
-                        color="primary"
-                      />
+                      <div>
+                        <EventFormModal heading={""} eventId={event._id} />
+                      </div>
+
                       <DeleteIcon
                         sx={{ color: "#f44336" }}
                         onClick={() => handleOpenDialog(event._id)}
@@ -208,10 +251,10 @@ const EventTable = ({
           <Button
             onClick={handleCloseDialog}
             sx={{
-              backgroundColor: "#f44336",
+              backgroundColor: "#673ab7",
               color: "white",
               "&:hover": {
-                backgroundColor: "#d32f2f",
+                backgroundColor: "#512da8",
               },
               fontWeight: "bold",
               borderRadius: "8px",
@@ -223,10 +266,10 @@ const EventTable = ({
           <Button
             onClick={handleConfirmDelete}
             sx={{
-              backgroundColor: "#673ab7",
+              backgroundColor: "#f44336",
               color: "white",
               "&:hover": {
-                backgroundColor: "#512da8",
+                backgroundColor: "#d32f2f",
               },
               fontWeight: "bold",
               borderRadius: "8px",

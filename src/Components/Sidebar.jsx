@@ -127,6 +127,21 @@ export default function PersistentDrawerLeft() {
   const isPublicRoute =
     location.pathname === "/" || location.pathname === "/sign-up";
 
+  // Dynamically filter menu items based on user role
+  const filteredMenuItems = routes
+    .filter(
+      (route) =>
+        // Only include "Dashboard" and "Event" routes
+        ["Dashboard", "Event"].includes(route.name) &&
+        // Check if the user has the required role
+        route.element?.props?.allowedRoles?.includes(user?.role)
+    )
+    .map((route) => ({
+      text: route.name,
+      icon: route.icon,
+      path: route.path,
+    }));
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       {/* Conditionally render AppBar and Drawer for public routes */}
@@ -282,9 +297,33 @@ export default function PersistentDrawerLeft() {
                 )}
               </IconButton>
             </DrawerHeader>
-
-            <List>
+            {/* <List>
               {menuItems.map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#ede7f6",
+                        color: "#673ab7",
+                        transition: "background-color 0.3s ease",
+                        borderRadius: "15px",
+                      },
+                    }}
+                    component={Link}
+                    to={item.path}
+                  >
+                    <ListItemIcon
+                      sx={{ justifyContent: "center", fontSize: "medium" }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List> */}
+            <List>
+              {filteredMenuItems.map((item) => (
                 <ListItem key={item.text} disablePadding>
                   <ListItemButton
                     sx={{
