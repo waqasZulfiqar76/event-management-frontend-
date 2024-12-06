@@ -2,36 +2,51 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import EventTable from "../Components/Events/EventsTable"; // Import the reusable table component
 import API_URL from "../Utils/ApiURL";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Tabs, Tab, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import EventFormModal from "../Components/Events/EventFormModel";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
+  const [approvedEvents, setApprovedEvents] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const [totalCount, setTotalCount] = useState(0);
   const [searchTitle, setSearchTitle] = useState("");
+  const [tabValue, setTabValue] = useState(0); // For tab navigation
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/events/get-events/`, {
-          params: {
-            page: page + 1,
-            limit: rowsPerPage,
-            title: searchTitle,
-          },
-        });
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        setEvents(response.data.events);
-        setTotalCount(response.data.pagination.totalCount);
-      } catch (error) {
-        console.error("Error fetching events:", error);
+  const fetchEventsByStatus = async (status) => {
+    try {
+      const response = await axios.get(`${API_URL}/events/get-events`, {
+        params: {
+          page: page + 1,
+          limit: rowsPerPage,
+          title: searchTitle,
+          approvalStatus: status,
+        },
+      });
+      if (status === "pending") {
+        setPendingEvents(response.data.events);
+      } else if (status === "approved") {
+        setApprovedEvents(response.data.events);
       }
-    };
+      setTotalCount(response.data.pagination.totalCount);
+    } catch (error) {
+      console.error(`Error fetching ${status} events:`, error);
+    }
+  };
 
-    fetchEvents();
-  }, [page, rowsPerPage, searchTitle]);
+  useEffect(() => {
+    if (user?.role === "admin") {
+      fetchEventsByStatus("pending");
+      fetchEventsByStatus("approved");
+    } else {
+      fetchEventsByStatus("approved");
+    }
+  }, [user?.role, page, rowsPerPage, searchTitle]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -46,31 +61,39 @@ const Events = () => {
     setSearchTitle(event.target.value);
   };
 
-  // Handle delete event
   const handleDeleteEvent = async (id) => {
     try {
       await axios.delete(`${API_URL}/events/delete-event/${id}`);
-
-      setEvents(events.filter((event) => event._id !== id));
-
+      setPendingEvents((prev) => prev.filter((event) => event._id !== id));
+      setApprovedEvents((prev) => prev.filter((event) => event._id !== id));
       setTotalCount((prevTotal) => prevTotal - 1);
     } catch (error) {
       console.error("Error deleting event:", error);
     }
   };
-  //handle update event
+
   const handleUpdateEvent = (id) => {
-    console.log("Updating event with ID:", id);
     navigate(`/event-form/${id}`);
   };
-  //handle detail event
+
   const handleDetail = (id) => {
-    console.log("detail event with ID:", id);
     navigate(`/event-detail/${id}`);
   };
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+    setPage(0); // Reset page when switching tabs
+  };
+
   return (
-    <>
+    <Box
+      sx={{
+        marginTop: "4.5rem",
+        backgroundColor: "#eef2f6",
+        borderRadius: "15px",
+        padding: 3,
+      }}
+    >
       <Typography
         variant="h4"
         gutterBottom
@@ -78,23 +101,20 @@ const Events = () => {
         sx={{
           fontWeight: "bold",
           marginBottom: 3,
-          marginTop: 5,
-          fontFamily: "Parkinsans", // Font you want to apply
-          backgroundColor: "#1976d2",
-          color: "white",
-          backgroundColor: "black",
+          textAlign: "start",
+          fontFamily: "Parkinsans",
+          color: "black",
           opacity: "70%",
           padding: "10px",
-          clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
         }}
       >
         Events
       </Typography>
       <Box
         sx={{
-          margin: "1rem 0",
+          margin: "",
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}
       >
         <TextField
@@ -105,32 +125,78 @@ const Events = () => {
           placeholder="Search Event"
           style={{ marginBottom: "20px", padding: "8px", width: "300px" }}
         />
-        <Button
-          onClick={() => navigate("/event-form")}
-          sx={{
-            padding: "5px",
-            width: "6rem",
-            height: "2.5rem",
-            color: "black",
-            outline: "black",
-          }}
-          variant="outlined"
-        >
-          Add Event
-        </Button>
+        <EventFormModal heading="Add Event" eventId={null} />
       </Box>
-      <EventTable
-        events={events}
-        totalCount={totalCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        handlePageChange={handleChangePage}
-        handleRowsPerPageChange={handleChangeRowsPerPage}
-        handleDeleteEvent={handleDeleteEvent}
-        handleUpdateEvent={handleUpdateEvent}
-        handleDetail={handleDetail}
-      />
-    </>
+
+      {user?.role === "admin" ? (
+        <>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            centered
+            sx={{
+              marginBottom: "1rem",
+              "& .MuiTab-root": {
+                color: "black",
+              },
+              "& .Mui-selected": {
+                color: "#673ab7",
+                fontWeight: "bold",
+              },
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#673ab7",
+              },
+            }}
+          >
+            <Tab label="Pending Events" />
+            <Tab label="Approved Events" />
+          </Tabs>
+          <Box>
+            {tabValue === 0 && (
+              <EventTable
+                events={pendingEvents}
+                totalCount={totalCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                handlePageChange={handleChangePage}
+                handleRowsPerPageChange={handleChangeRowsPerPage}
+                handleDeleteEvent={handleDeleteEvent}
+                handleUpdateEvent={handleUpdateEvent}
+                handleDetail={handleDetail}
+                isUserEvents={false}
+              />
+            )}
+            {tabValue === 1 && (
+              <EventTable
+                events={approvedEvents}
+                totalCount={totalCount}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                handlePageChange={handleChangePage}
+                handleRowsPerPageChange={handleChangeRowsPerPage}
+                handleDeleteEvent={handleDeleteEvent}
+                handleUpdateEvent={handleUpdateEvent}
+                handleDetail={handleDetail}
+                isUserEvents={false}
+              />
+            )}
+          </Box>
+        </>
+      ) : (
+        <EventTable
+          events={approvedEvents}
+          totalCount={totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          handlePageChange={handleChangePage}
+          handleRowsPerPageChange={handleChangeRowsPerPage}
+          handleDeleteEvent={handleDeleteEvent}
+          handleUpdateEvent={handleUpdateEvent}
+          handleDetail={handleDetail}
+          isUserEvents={false}
+        />
+      )}
+    </Box>
   );
 };
 

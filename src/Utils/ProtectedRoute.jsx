@@ -1,12 +1,25 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, allowedRoles }) {
   // Check if 'authToken' exists in localStorage
-  const isAuthenticated = localStorage.getItem('authToken') !== null;
+  const isAuthenticated = localStorage.getItem("authToken") !== null;
 
-  // If authenticated, render the children (protected component)
-  // If not authenticated, redirect to the login page ("/")
-  return isAuthenticated ? children : <Navigate to="/signin" />;
+  // Get user details and role from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userRole = user?.role;
+  console.log(userRole);
+  // Check if user role is in the list of allowed roles
+  const hasAccess = allowedRoles.includes(userRole);
+
+  // Redirect to signin if not authenticated, or unauthorized if role is invalid
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" />;
+  }
+  if (!hasAccess) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return children;
 }
 
 export default ProtectedRoute;

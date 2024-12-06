@@ -4,46 +4,28 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   CircularProgress,
 } from "@mui/material";
 import API_URL from "../Utils/ApiURL";
 import axios from "axios";
+import { PieChart } from "@mui/x-charts/PieChart";
 
-const DashboardStats = ({ userStats }) => {
-  const [stats, setStats] = useState(userStats || null);
-  const [loading, setLoading] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
-  // Fetch user stats
-  useEffect(() => {
-    const fetchUserStats = async () => {
-      if (!userStats) {
-        setLoading(true);
-        try {
-          const response = await axios.get(
-            `${API_URL}/users/user-stats/${user._id}`
-          );
-
-          // Log response data
-          console.log(response.data);
-
-          // Check if response status is not successful
-          if (response.status !== 200) {
-            throw new Error("Failed to fetch user stats");
-          }
-
-          // Set stats with response data
-          setStats(response.data);
-        } catch (error) {
-          console.error("Error fetching stats:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserStats();
-  }, [userStats]);
+const DashboardStats = ({ stats, loading, heading }) => {
+  console.log(stats);
+  const chartData = [
+    { id: 0, value: stats?.totalCreatedEvents || 0, label: "Created Events" },
+    { id: 1, value: stats?.totalJoinedEvents || 0, label: "Joined Events" },
+    {
+      id: 2,
+      value: stats?.upcomingCreatedEvents || 0,
+      label: "Upcoming Created",
+    },
+    // {
+    //   id: 3,
+    //   value: stats?.upcomingJoinedEvents || 0,
+    //   label: "Upcoming Joined",
+    // },
+  ];
 
   if (loading) {
     return (
@@ -61,36 +43,57 @@ const DashboardStats = ({ userStats }) => {
   }
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        align="center"
+    <>
+      <Box
         sx={{
-          fontWeight: "bold",
-          marginBottom: 3,
-          marginTop: 5,
-          fontFamily: "Parkinsans", // Font you want to apply
-          backgroundColor: "#1976d2",
-          color: "white",
-          backgroundColor: "black",
-          opacity: "70%",
-          padding: "10px",
-          clipPath: "polygon(0 0, 91% 0, 100% 100%, 8% 100%)",
+          marginTop: "4rem",
+          minWidth: "100%",
+
+          backgroundColor: "#eef2f6",
+          borderRadius: "15px",
+          padding: 3,
         }}
       >
-        User Dashboard
-      </Typography>
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
+          sx={{
+            fontWeight: "bold",
+            marginBottom: 3,
+            textAlign: "start",
+            fontFamily: "Parkinsans",
+            color: "black",
+            opacity: "70%",
+            padding: "10px",
+          }}
+        >
+          {heading}
+        </Typography>
 
-      <Grid container spacing={3}>
-        {/* Total Created Events Card */}
-        <Grid item xs={12} sm={6} md={3}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+          {/* Total Created Events Card */}
           <Card
             sx={{
-              backgroundColor: "primary.main",
+              backgroundImage: `linear-gradient(to right, #11998e,#38ef7d )`,
               color: "common.white",
               boxShadow: 3,
-              "&:hover": { boxShadow: 6 },
+              flex: "1 1 calc(25% - 16px)",
+              maxWidth: "300px",
+              minWidth: "200px",
+              transition: "all 0.3s ease",
+              transform: "scale(1)",
+              "&:hover": {
+                boxShadow: 6,
+                transform: "scale(1.05)",
+              },
             }}
           >
             <CardContent
@@ -98,29 +101,43 @@ const DashboardStats = ({ userStats }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                position: "relative",
+                zIndex: 1,
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
-              >
-                Total Events Created
-              </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {stats?.totalCreatedEvents || 0}
               </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "semiBold",
+                  fontFamily: "Parkinsans",
+                  mt: "1rem",
+                  lineHeight: "20px",
+                  textAlign: "center",
+                }}
+              >
+                Total Events Created
+              </Typography>
             </CardContent>
           </Card>
-        </Grid>
 
-        {/* Total Joined Events Card */}
-        <Grid item xs={12} sm={6} md={3}>
+          {/* Total Joined Events Card */}
           <Card
             sx={{
-              backgroundColor: "secondary.main",
+              backgroundImage: `linear-gradient(to right, #4e54c8, #8f94fb)`,
               color: "common.white",
               boxShadow: 3,
-              "&:hover": { boxShadow: 6 },
+              flex: "1 1 calc(25% - 16px)",
+              maxWidth: "300px",
+              minWidth: "200px",
+              transition: "all 0.3s ease",
+              transform: "scale(1)",
+              "&:hover": {
+                boxShadow: 6,
+                transform: "scale(1.05)",
+              },
             }}
           >
             <CardContent
@@ -128,29 +145,43 @@ const DashboardStats = ({ userStats }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                position: "relative",
+                zIndex: 1,
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
-              >
-                Total Events Joined
-              </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {stats?.totalJoinedEvents || 0}
               </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "semiBold",
+                  fontFamily: "Parkinsans",
+                  mt: "1rem",
+                  lineHeight: "20px",
+                  textAlign: "center",
+                }}
+              >
+                Total Events Joined
+              </Typography>
             </CardContent>
           </Card>
-        </Grid>
 
-        {/* Upcoming Created Events Card */}
-        <Grid item xs={12} sm={6} md={3}>
+          {/* Upcoming Created Events Card */}
           <Card
             sx={{
-              backgroundColor: "info.main",
+              backgroundImage: `linear-gradient(to right, #c471f2, #f76cc6)`,
               color: "common.white",
               boxShadow: 3,
-              "&:hover": { boxShadow: 6 },
+              flex: "1 1 calc(25% - 16px)",
+              maxWidth: "300px",
+              minWidth: "200px",
+              transition: "all 0.3s ease",
+              transform: "scale(1)",
+              "&:hover": {
+                boxShadow: 6,
+                transform: "scale(1.05)",
+              },
             }}
           >
             <CardContent
@@ -158,28 +189,120 @@ const DashboardStats = ({ userStats }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                position: "relative",
+                zIndex: 1,
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
-              >
-                Upcoming Created Events
-              </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {stats?.upcomingCreatedEvents || 0}
               </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "semiBold",
+                  fontFamily: "Parkinsans",
+                  mt: "1rem",
+                  lineHeight: "20px",
+                  textAlign: "center",
+                }}
+              >
+                Upcoming Created Events
+              </Typography>
             </CardContent>
           </Card>
-        </Grid>
+          {/* total user Card */}
+          {stats?.totalUsers ? (
+            <Card
+              sx={{
+                backgroundImage: `linear-gradient(to right, #c471f2, #f76cc6)`,
+                color: "common.white",
+                boxShadow: 3,
+                flex: "1 1 calc(25% - 16px)",
+                maxWidth: "300px",
+                minWidth: "200px",
+                transition: "all 0.3s ease",
+                transform: "scale(1)",
+                "&:hover": {
+                  boxShadow: 6,
+                  transform: "scale(1.05)",
+                },
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                  {stats?.totalUsers || 0}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "semiBold",
+                    fontFamily: "Parkinsans",
+                    mt: "1rem",
+                    lineHeight: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  Total Users
+                </Typography>
+              </CardContent>
+            </Card>
+          ) : (
+            ""
+          )}
 
-        {/* Upcoming Joined Events Card */}
-        <Grid item xs={12} sm={6} md={3}>
-          <Card
+          {/* Upcoming Joined Events Card */}
+          {/* <Card
             sx={{
-              backgroundColor: "warning.main",
+              backgroundImage: "linear-gradient(to right, #FF8C00, #FFA500)", // Gradient colors
               color: "common.white",
               boxShadow: 3,
+              flex: "1 1 calc(25% - 16px)",
+              maxWidth: "300px",
+              minWidth: "200px",
+              "&:hover": { boxShadow: 6 },
+            }}
+          >
+            <CardContent
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                {stats?.upcomingJoinedEvents || 0}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "semiBold",
+                  fontFamily: "Parkinsans",
+                  mt: "1rem",
+                  lineHeight: "20px",
+                }}
+              >
+                Upcoming Joined Events
+              </Typography>
+            </CardContent>
+          </Card> */}
+          {/* <Card
+            sx={{
+              backgroundImage: "linear-gradient(to right, #FF8C00, #FFA500)", // Gradient
+              color: "common.white",
+              boxShadow: 3,
+              flex: "1 1 calc(25% - 16px)",
+              maxWidth: "300px",
+              minWidth: "200px",
+              borderRadius: "12px", // Optional: Rounded corners
               "&:hover": { boxShadow: 6 },
             }}
           >
@@ -190,20 +313,50 @@ const DashboardStats = ({ userStats }) => {
                 alignItems: "center",
               }}
             >
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold", fontFamily: "Parkinsans", mb: 1 }}
-              >
-                Upcoming Joined Events
-              </Typography>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {stats?.upcomingJoinedEvents || 0}
               </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "semiBold",
+                  fontFamily: "Parkinsans",
+                  mt: "1rem",
+                  lineHeight: "20px",
+                }}
+              >
+                Upcoming Joined Events
+              </Typography>
             </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+          </Card> */}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 4,
+            padding: 2,
+            backgroundColor: "#ffffff",
+            borderRadius: "15px",
+            boxShadow: 1,
+            maxWidth: "100",
+            marginLeft: "auto",
+            marginRight: "auto", // Center horizontally
+          }}
+        >
+          <PieChart
+            series={[
+              {
+                data: chartData,
+              },
+            ]}
+            width={600}
+            height={300}
+          />
+        </Box>
+      </Box>
+    </>
   );
 };
 
